@@ -1,4 +1,8 @@
-# CS3219 OTOT Assignment - Task D
+# CS3219 OTOT Assignment Task D: Kafka Cluster & Zookeeper Ensemble
+
+## Jack Chen Yu Jie
+
+
 
 ## Task
 
