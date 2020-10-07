@@ -16,7 +16,7 @@ Set up 3 Kafka nodes and Zookeeper nodes to be deployed in **3 different servers
 
 In my example, a total of 3 Ubuntu VMs are set up using *__Google Cloud Platform__*. We can then `ssh` into the VM by clicking SSH which will give a command terminal of the VM instance. The internal IP address can be found in the ***VM instances*** page as shown in the screenshot below.
 
-![VM Instances](./screenshot/vm.png)
+![VM Instances](./screenshots/vm.png)
 
 Below are the (internal) IP addresses for my example:
 
@@ -47,11 +47,11 @@ We need to first install `docker`, then install `docker-compose` which is used t
 
 1. First fork and clone this repo or just download the `docker-compose.yml` file onto your local machine. 
 
-2. Replace the fields marked within `{}` with the appropriate VM's IP Addresses (Internal IP Address). An example is shown in `docker-compose_exampl.yml`
+2. Replace the fields marked within `{}` with the appropriate VM's IP Addresses (Internal IP Address). An example is shown in `docker-compose_example.yml`
 
 3. Upload this file to all of the three VM instances by clicking the **settings button on the top right corner of the CLI > Upload file** as shown in the screenshot below
 
-   ![Upload file to VM](./screenshot/upload.png)
+   ![Upload file to VM](./screenshots/upload.png)
 
 4. Start the Zookeeper and Kafka node using the `docker-compose.yml` file that was copied into the VMs using the following commands in this order:
 
@@ -88,7 +88,7 @@ After setting up the Zookeeper and Kafka nodes in all 3 servers. We can now crea
 
    
 
-2. If the topic is created successfully, it should show the message as shown in below: ![Creating_Topic](./screenshot/Creating_Topic.png)
+2. If the topic is created successfully, it should show the message as shown in below: ![Creating_Topic](./screenshots/Creating_Topic.png)
 
    We can also check to see if the topic has been successfully created using the command below, where `VM_IPAddress` is the IP Address that used above.
 
@@ -133,7 +133,7 @@ After setting up the Zookeeper and Kafka nodes in all 3 servers. We can now crea
 
    
 
-   ![sending_message](./screenshot/PubSubSending.png)
+   ![sending_message](./screenshots/PubSubSending.png)
 
    
 
@@ -145,12 +145,12 @@ After setting up the Zookeeper and Kafka nodes in all 3 servers. We can now crea
 
 To illustrate the taking over of leader node, we first have to stop the current leader node by executing `sudo docker stop {container_id}` where `{container_id}` is the **id of the** **kafka container** of the leader node/VM. (*Note: you can simply type a subset of the full `container_id` . An example of stopping a process using this method is shown below.*)
    
-   ![Stop process](./screenshot/stopprocess.png)
+   ![Stop process](./screenshots/stopprocess.png)
 
    We then run the command `kafkacat -L -b {VM_IPAddress}:9092` again to show that one of the other nodes has taken over as the leader node. (*Note that you can only use the IP addresses of the other VM(s) with running Kafka containers, hence you cannot use the IP address of the leader node you just terminated*)
    
    As seen in the screenshot, the leader of `PubSub` topic was initially `broker 1001` which was the 2nd VM (`10.128.0.6:9092`) and when we stop the docker container in our 2nd VM, we can see that listing the topics again show that the leader is now `broker 1003` (`10.128.0.5:9092`) which is our 1st VM.
    
    
-   ![Failure_MN](./screenshot/failure.png)
+   ![Failure_MN](./screenshots/failure.png)
 
