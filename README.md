@@ -133,9 +133,13 @@ After setting up the Zookeeper and Kafka nodes in all 3 servers. We can now crea
 
    ### Successful management of failure of master node in the cluster
 
-   For topics created with `replication-factor` of more than 1, when the leader node is down, one of the remaining kafka brokers will take over as the leader node. The order of taking over can be seen by `isrs` as shown in the screenshot below.
+   For topics created with `replication-factor` of more than 1, when the leader node is down, one of the remaining kafka brokers will take over as the leader node. The order of taking over can be seen by `isrs` as shown in the screenshot below. 
+   To view this metadata, execute the command `kafkacat -L -b {VM_IPAddress}:9092`. 
+   To illustrate the taking over of leader node, we first have to stop the current leader node by executing `docker stop {container_name}` where `{container_name}` is the name of the container of the leader node.
+We then run the command `kafkacat -L -b {VM_IPAddress}:9092` again to show that one of the other nodes taking over the leader node.
 
    As seen in the screenshot, the leader of `PubSub` topic was initially `broker 1001` which was the 2nd VM (`10.128.0.6:9092`) and when we stop the docker container in our 2nd VM, we can see that listing the topics again show that the leader is now `broker 1003` (`10.128.0.5:9092`) which is our 1st VM.
+   
 
    ![Failure_MN](./screenshot/failure.png)
 
