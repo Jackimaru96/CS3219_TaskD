@@ -12,7 +12,7 @@ To create a **3-node Apache Kafka cluster** using Docker that demonstrates Pub-S
 
 ## Servers Setup
 
-Set up 3 Kafka nodes and Zookeeper nodes to be deployed in **3 different servers**. Each server will run a single Kafka and Zookeeper node. We can create 3 servers using any of the Cloud Computing Service provider such as Microsoft Azure.
+Set up 3 Kafka nodes and Zookeeper nodes to be deployed in **3 different servers**. Each server will run a single Kafka and Zookeeper node. We can create 3 servers using any of the Cloud Computing Service provider such as Microsoft Azure or Google Cloud Platform.
 
 In my example, a total of 3 Ubuntu VMs are set up using *__Google Cloud Platform__*. We can then `ssh` into the VM by clicking SSH which will give a command terminal of the VM instance. The internal IP address can be found in the ***VM instances*** page as shown in the screenshot below.
 
