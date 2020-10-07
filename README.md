@@ -14,7 +14,7 @@ To create a **3-node Apache Kafka cluster** using Docker that demonstrates Pub-S
 
 Set up 3 Kafka nodes and Zookeeper nodes to be deployed in **3 different servers**. Each server will run a single Kafka and Zookeeper node. We can create 3 servers using any of the Cloud Computing Service provider such as Microsoft Azure or Google Cloud Platform.
 
-In my example, a total of 3 Ubuntu VMs are set up using *__Google Cloud Platform__*. We can then `ssh` into the VM by clicking SSH which will give a command terminal of the VM instance. The internal IP address can be found in the ***VM instances*** page as shown in the screenshot below.
+In my example, a total of 3 Ubuntu VMs are set up using *__Google Cloud Platform__*.  We can then `ssh` into the VM by clicking on each individual VMs and pressing the SSH button in the ***VM instance details page*** which will give a command terminal of the VM instance. The internal IP address can be found in the ***VM instances*** page as shown in the screenshot below.
 
 ![VM Instances](./screenshots/vm.png)
 
@@ -53,7 +53,7 @@ We need to first install `docker`, then install `docker-compose` which is used t
 
    ![Upload file to VM](./screenshots/upload.png)
 
-4. Start the Zookeeper and Kafka node using the `docker-compose.yml` file that was copied into the VMs using the following commands in this order:
+4. Start the Zookeeper and Kafka node using the `docker-compose.yml` file that was copied into the VMs using the following commands in this order in each respective VMs:
 
 ```c
 //Server 1
@@ -125,7 +125,7 @@ After setting up the Zookeeper and Kafka nodes in all 3 servers. We can now crea
    ```
 
 
- 
+
 
 4. The publisher can type messages in the publisher terminal and see it appear on the consumer's terminal as shown in the screenshot below.
 
@@ -137,20 +137,23 @@ After setting up the Zookeeper and Kafka nodes in all 3 servers. We can now crea
 
    
 
-   ### Successful management of failure of master node in the cluster
+   ## Successful management of failure of master node in the cluster
 
    For topics created with `replication-factor` of more than 1, when the leader node is down, one of the remaining kafka brokers will take over as the leader node. The order of taking over can be seen by `isrs` as shown in the last screenshot below. 
    
    To view this metadata, execute the command `kafkacat -L -b {VM_IPAddress}:9092` as before.
-
-To illustrate the taking over of leader node, we first have to stop the current leader node by executing `sudo docker stop {container_id}` where `{container_id}` is the **id of the** **kafka container** of the leader node/VM. (*Note: you can simply type a subset of the full `container_id` . An example of stopping a process using this method is shown below.*)
    
-   ![Stop process](./screenshots/stopprocess.png)
-
+   To illustrate the taking over of leader node, we first have to stop the current leader node by executing `sudo docker stop {container_id}` where `{container_id}` is the **id of the** **kafka container** of the leader node/VM. In my example, I stopped kafka container of the 2nd VM (`10.128.0.6`).
+   (*Note: you can simply type a subset of the full `container_id` . An example of stopping a process using this method is shown below.*)
+   
+      ![Stop process](./screenshots/stopprocess.png)
+   
+   
+   
    We then run the command `kafkacat -L -b {VM_IPAddress}:9092` again to show that one of the other nodes has taken over as the leader node. (*Note that you can only use the IP addresses of the other VM(s) with running Kafka containers, hence you cannot use the IP address of the leader node you just terminated*)
    
-   As seen in the screenshot, the leader of `PubSub` topic was initially `broker 1001` which was the 2nd VM (`10.128.0.6:9092`) and when we stop the docker container in our 2nd VM, we can see that listing the topics again show that the leader is now `broker 1003` (`10.128.0.5:9092`) which is our 1st VM.
+   As seen in the screenshot, the leader of `PubSub` topic was initially `broker 1001` which was the 2nd VM (`10.128.0.6:9092`) and when we stop the docker container in our 2nd VM using the method described above. We can see that listing the topics again show that the leader is now `broker 1003` (`10.128.0.5:9092`) which is our 1st VM.
    
    
-   ![Failure_MN](./screenshots/failure.png)
+      ![Failure_MN](./screenshots/failure.png)
 
